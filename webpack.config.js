@@ -13,7 +13,19 @@ module.exports = {
       test: /\.js?$/,
       exclude: /node_modules/,
       loader: 'react-hot-loader!babel-loader'
-    }]
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader','css-loader', {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [require('autoprefixer')]
+            }}]
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'file-loader?name=public/fonts/[name].[ext]'
+      }]
   },
 
   output: {
@@ -31,6 +43,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       inject: true
+    }),
+    new webpack.ProvidePlugin({ 
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      Tether: 'tether'
     })
   ]
 }
